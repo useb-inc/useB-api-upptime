@@ -2,6 +2,7 @@ name: Update API Token CI
 on:
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
 jobs:
   renew_token:
     name: Renew Api Token

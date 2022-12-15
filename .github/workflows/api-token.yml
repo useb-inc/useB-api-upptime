@@ -1,0 +1,26 @@
+name: Update API Token CI
+on:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  renew_token:
+    name: Renew Api Token
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Make token issue request
+        uses: fjogeleit/http-request-action@v1
+        id: tokenRequest
+        with:
+          url: 'https://auth.useb.co.kr/oauth/token'
+          method: 'POST'
+          customHeaders: '{"Authorization": "Basic ${{ secrets.API_BASIC_AUTH }}"}'
+      - name: Update token secret
+        uses: gliech/create-github-secret-action@v1
+        with:
+          name: API_TOKEN
+          pa_token: ${{ secrets.GH_PAT }}
+          value: ${{ fromJson(steps.tokenRequest.outputs.response).jwt }}
+      - name: Show token for debug
+        run: |
+          echo ${{ secrets.API_TOKEN }}
+

@@ -20,7 +20,3 @@ jobs:
           name: API_TOKEN
           pa_token: ${{ secrets.GH_PAT }}
           value: ${{ fromJson(steps.tokenRequest.outputs.response).jwt }}
-      - name: Show token for debug
-        run: |
-          echo ${{ secrets.API_TOKEN }}
-
